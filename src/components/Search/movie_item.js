@@ -5,8 +5,13 @@ import PropTypes from 'prop-types';
 
 class MovieItem extends Component {
 
-  handleOnClick() {
-    this.props.closeSearch.bind(this)
+  static contextTypes = {
+    router: PropTypes.object
+  }
+
+  handleOnClick(event) {
+    event.preventDefault();
+    this.context.router.history.push(event.target.parentElement.parentElement.getAttribute('href'));
   }
 
   render() {
@@ -17,7 +22,7 @@ class MovieItem extends Component {
 
       return (
         <li className="list-group-item">
-          <Link to={`/movie/${movie.id}/${slug}`} className="media" onClick={this.handleOnClick}>
+          <Link to={`/movie/${movie.id}/${slug}`} className="media" onClick={() => this.handleOnClick()}>
             <img width="20" className="d-flex align-self-center mr-3" src={image_url} alt={movie.title} />
             <div className="media-body">
               <h5 className="mt-0">{movie.title}</h5>
@@ -30,7 +35,3 @@ class MovieItem extends Component {
 }
 
 export default MovieItem;
-
-MovieItem.propTypes = {
-  searchClose: PropTypes.func
-};

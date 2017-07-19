@@ -83,7 +83,6 @@ class Search extends Component {
                                 return <MovieItem
                                   movie={movie}
                                   key={movie.id}
-                                  closeSearch={this.toggle}
                                 />
                               })
                             }
