@@ -141,6 +141,7 @@ footer {
   .movie-detail .video-background {
     height: 100%; }
   .movie-detail img.img-background {
+    top: -20vh;
     transform: scale(1.2);
     animation: anim-background 40s linear infinite; }
   .movie-detail .movie-resume {

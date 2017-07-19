@@ -177,6 +177,7 @@ footer {
     height: 100%;
   }
   img.img-background {
+    top: -20vh;
     transform: scale(1.2);
     animation: anim-background 40s linear infinite;
   }
