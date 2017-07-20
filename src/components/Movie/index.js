@@ -278,7 +278,7 @@ class Movie extends Component {
         </div>
         <div className="container">
           <div className="row">
-            <div className="col-sm-9">
+            <div className="col-sm-12 col-md-9">
               {this.state.overview ? <h2>Synopsis</h2> : ''}
               <p>{this.state.overview}</p>
               {this.state.cast.length ? <h2>Casting</h2> : '' }
@@ -297,7 +297,7 @@ class Movie extends Component {
                 </div>
               </div>
             </div>
-            <div className="col-sm-3 sidebar">
+            <div className="col-sm-12 col-md-3 sidebar">
               {this.state.production_companies.length ? <label>Sociétés de production</label> : '' }
               {this.renderProductionCompanies()}
               {this.state.genres.length ? <label>Genres</label> : '' }

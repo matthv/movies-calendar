@@ -13,7 +13,7 @@ class Character extends Component {
       : `${process.env.PUBLIC_URL}/character-default.jpg`;
 
     return (
-      <div className="col-sm-6">
+      <div className="col-sm-12 col-md-6">
         <Card block className="character">
           <CardImg top src={image_url} alt={character.name} />
           <CardText className="mt-4">

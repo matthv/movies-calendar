@@ -44,7 +44,7 @@ class MovieDetail extends Component {
                     <div className="mt-2 title">{movie.title}</div>
                     <p className="description">{movie.overview}</p>
                     {movie.vote_average ? this.renderAverage() : '' }
-                    <div className="float-right">
+                    <div className="float-md-right">
                       <Link to={`movie/${movie.id}/${slug}`} className="btn btn-pink">
                         <i className="fa fa-eye"></i> Détail du film
                       </Link>

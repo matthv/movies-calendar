@@ -13,7 +13,7 @@ class MovieItem extends Component {
     let slug = slugify(movie.title.toLowerCase()) ? slugify(movie.title.toLowerCase()) : 'detail';
 
     return (
-      <div className="col-sm-4">
+      <div className="col-md-6 col-lg-4">
         <Card className="mb-3">
           <CardImg top src={image_url} alt={movie.title} />
           <CardBlock>

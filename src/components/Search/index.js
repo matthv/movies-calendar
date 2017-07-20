@@ -63,7 +63,7 @@ class Search extends Component {
                       </Button>
                     </div>
                   </div>
-                  <div className="col-sm-8 offset-2">
+                  <div className="col-sm-8 offset-sm-2">
                     <Form inline>
                       <input ref={(input) => { this.search = input; }}
                              type="text"

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem } from 'reactstrap';
+import { Collapse, Navbar, NavbarBrand, Nav, NavItem } from 'reactstrap';
 import Search from '../Search/index';
 
 class Layout extends Component {
@@ -20,9 +20,8 @@ class Layout extends Component {
   render() {
     return (
       <main>
-        <Navbar className="header" toggleable>
+        <Navbar className="header navbar-toggleable-xl" toggleable>
           <div className="container">
-            <NavbarToggler right onClick={this.toggle} />
             <NavbarBrand href="/">
               <img src={`${process.env.PUBLIC_URL}/logo.png`} alt="logo" />
             </NavbarBrand>
