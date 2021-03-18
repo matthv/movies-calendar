@@ -23,7 +23,7 @@
     "reactstrap": "^8.9.0",
     "slugify": "^1.1.0"
   },
-  "devDependencies": {
+  "optionalDependencies": {
     "fsevents": "^2.1.0"
   },
   "scripts": {
