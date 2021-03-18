@@ -6,7 +6,6 @@
     "axios": "^0.21",
     "bootstrap": "4.0.0-alpha.6",
     "capitalize": "^1.0.0",
-    "fsevents": "^2.1.0",
     "humanize-number": "^0.0.2",
     "lodash": "^4.17.4",
     "moment": "^2.18.1",
@@ -23,6 +22,9 @@
     "react-youtube": "^7.4.0",
     "reactstrap": "^8.9.0",
     "slugify": "^1.1.0"
+  },
+  "devDependencies": {
+    "fsevents": "^2.1.0"
   },
   "scripts": {
     "build-css": "node-sass-chokidar src/ -o src/",
