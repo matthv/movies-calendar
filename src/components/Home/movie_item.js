@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Card, CardImg, CardBlock, CardTitle, CardFooter } from 'reactstrap';
+import { Card, CardImg, CardBody, CardTitle, CardFooter } from 'reactstrap';
 import slugify from 'slugify';
 
 class MovieItem extends Component {
@@ -16,12 +16,12 @@ class MovieItem extends Component {
       <div className="col-md-6 col-lg-4">
         <Card className="mb-3">
           <CardImg top src={image_url} alt={movie.title} />
-          <CardBlock>
+          <CardBody>
             <CardTitle className="title">{movie.title}</CardTitle>
             <Link to={`movie/${movie.id}/${slug}`} className="btn btn-pink">
               <i className="fa fa-eye"></i>
             </Link>
-          </CardBlock>
+          </CardBody>
           <CardFooter>
             {
               this.props.genres.map((genre, index) => {

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, CardImg, CardText } from 'reactstrap';
+import { Card, CardBody, CardImg, CardText } from 'reactstrap';
 
 class Character extends Component {
 
@@ -14,7 +14,7 @@ class Character extends Component {
 
     return (
       <div className="col-sm-12 col-md-6">
-        <Card block className="character">
+        <Card className="character p-4">
           <CardImg top src={image_url} alt={character.name} />
           <CardText className="mt-4">
             <strong>{character.name}</strong>

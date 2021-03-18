@@ -20,7 +20,7 @@ class Layout extends Component {
   render() {
     return (
       <main>
-        <Navbar className="header navbar-toggleable-xl" toggleable>
+        <Navbar className="header navbar-toggleable-xl">
           <div className="container">
             <NavbarBrand href="/">
               <img src={`${process.env.PUBLIC_URL}/logo.png`} alt="logo" />
