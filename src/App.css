@@ -227,12 +227,12 @@ label {
   .card .card-img-top {
     height: 168px;
     border-radius: 0; }
-  .card .card-block {
+  .card .card-body {
     padding: 35px 10px 10px 10px;
     position: relative; }
-    .card .card-block .title {
+    .card .card-body .title {
       font-size: 1.3em; }
-    .card .card-block .btn {
+    .card .card-body .btn {
       width: 40px;
       height: 40px;
       position: absolute;
