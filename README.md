@@ -6,7 +6,7 @@ This is a React application to list and search movies per month from the Movie D
 
 This project was bootstrapped with :heart: [Create React App](https://github.com/facebookincubator/create-react-app).
 
-[![movie-db](https://www.themoviedb.org/assets/static_cache/9b3f9c24d9fd5f297ae433eb33d93514/images/v4/logos/408x161-powered-by-rectangle-green.png)](https://www.themoviedb.org/)
+[<img src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_square_2-d537fb228cf3ded904ef09b136fe3fec72548ebc1fea3fbbd1ad9e36364db38b.svg" width="150" height="150">](https://www.themoviedb.org/)
 
 ## Preview
 
