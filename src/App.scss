@@ -1,6 +1,4 @@
-@import url('https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
-@import url('https://fonts.googleapis.com/css?family=Open+Sans|Roboto:400,700');
-@import 'circular-progressbar.css';
+@use 'sass:color';
 
 $primary: #29262E;
 $secondary: #FFF;
@@ -14,9 +12,11 @@ body {
 }
 
 a {
-  color: lighten($tertiary, 10%);
+  color: color.adjust($tertiary, $lightness: 10%);
+  text-decoration: none;
   &:focus, &:hover {
-    color: lighten($tertiary, 15%);
+    text-decoration: underline;
+    color: color.adjust($tertiary, $lightness: 15%);
   }
 }
 
@@ -58,7 +58,7 @@ h1, h2, .title {
   }
   .btn-search {
     font-size: 2em;
-    color: darken($secondary, 20%);
+    color: color.adjust($secondary, $lightness: -20%);
     background: transparent;
     border: none;
     box-shadow: none;
@@ -68,7 +68,7 @@ h1, h2, .title {
 
 footer {
   margin-top: 50px;
-  background: darken($primary, 30%);
+  background: color.adjust($primary, $lightness: -30%);
   padding: 40px;
   line-height: 2em;
   font-size: 1.2em;
@@ -97,7 +97,7 @@ footer {
     position: absolute;
     top: 0;
     left: 0;
-    background: darken($primary, 10%);
+    background: color.adjust($primary, $lightness: -10%);
     border-radius: 50%;
   }
 }
@@ -122,8 +122,8 @@ footer {
     box-shadow: none;
     cursor: pointer;
     &.btn-off {
-      color: darken($primary, 10%);
-      background: lighten($primary, 35%);
+      color: color.adjust($primary, $lightness: -10%);
+      background: color.adjust($primary, $lightness: 35%);
     }
     &.btn-on {
       color: $secondary;
@@ -222,6 +222,7 @@ footer {
 
 label {
   display: block;
+  margin-bottom: .5rem;
   font-weight: bold;
   text-transform: uppercase;
 }
@@ -248,21 +249,21 @@ label {
   border-radius: 35px;
   cursor: pointer;
   &:hover, &:focus {
-    background: lighten($tertiary, 10%);
-    border-color: darken($tertiary, 10%);
+    background: color.adjust($tertiary, $lightness: 10%);
+    border-color: color.adjust($tertiary, $lightness: -10%);
     color: $secondary;
     box-shadow: 0 0 0 2px rgba($tertiary, 0.25);
   }
   &:active {
     color: $secondary !important;
-    background: lighten($tertiary, 12%) !important;
+    background: color.adjust($tertiary, $lightness: 12%) !important;
   }
 }
 
 .sidebar {
   label {
     font-size: 1.1em;
-    border-top: 1px solid darken($tertiary, 10%);
+    border-top: 1px solid color.adjust($tertiary, $lightness: -10%);
     padding-top: 10px;
     margin-top: 10px;
     &:first-child {
@@ -302,7 +303,7 @@ label {
   }
   .badge {
     margin-right: 5px;
-    background: lighten($primary, 20%);
+    background: color.adjust($primary, $lightness: 20%);
   }
 }
 
@@ -322,14 +323,12 @@ label {
 }
 
 .modal-content {
+  color: $secondary;
   border-radius: 0;
   background: #000;
   border: 2px solid $tertiary;
   .modal-header {
     border-color: $tertiary;
-    button.close {
-      color: $secondary;
-    }
   }
 }
 
@@ -367,7 +366,7 @@ label {
   &.active {
     display: block;
   }
-  .btn-close {
+  .btn-close-search {
     font-size: 2em;
     color: $secondary;
     background: transparent;
@@ -375,7 +374,7 @@ label {
     box-shadow: none;
     cursor: pointer;
   }
-  .form-inline {
+  .search-form {
     width: 100%;
     .search {
       width: 100%;
@@ -394,16 +393,16 @@ label {
       }
     }
     ::-webkit-input-placeholder {
-      color: darken($secondary, 20%);
+      color: color.adjust($secondary, $lightness: -20%);
     }
     :-moz-placeholder {
-      color: darken($secondary, 20%);
+      color: color.adjust($secondary, $lightness: -20%);
     }
     ::-moz-placeholder {
-      color: darken($secondary, 20%);
+      color: color.adjust($secondary, $lightness: -20%);
     }
     :-ms-input-placeholder {
-      color: darken($secondary, 20%);
+      color: color.adjust($secondary, $lightness: -20%);
     }
   }
   .card {
@@ -517,7 +516,7 @@ label {
     }
   }
 
-  .main-search .form-inline .search {
+  .main-search .search-form .search {
     font-size: 2em;
   }
 
@@ -531,8 +530,27 @@ label {
   footer {
     padding: 20px;
     font-size: .8em;
-    .text-center, .text-right {
+    .text-center, .text-end {
       text-align: left !important;
     }
+  }
+}
+
+// Remplace le CSS de react-circular-progressbar
+.circular-progressbar {
+  width: 100%;
+  .circular-progressbar-path {
+    stroke: $tertiary;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 0.5s ease 0s;
+  }
+  .circular-progressbar-trail {
+    stroke: $secondary;
+  }
+  .circular-progressbar-text {
+    fill: $tertiary;
+    font-size: 25px;
+    dominant-baseline: middle;
+    text-anchor: middle;
   }
 }
