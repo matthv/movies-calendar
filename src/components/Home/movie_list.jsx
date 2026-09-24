@@ -1,7 +1,6 @@
 import MovieItem from './movie_item';
 
-// Les genres peuvent arriver apres les films, ou un id peut etre inconnu :
-// on ignore simplement ceux qu'on ne trouve pas.
+// Genres may load after the movies, and ids can be unknown: skip those.
 function genreNames(genreIds, genres) {
   return (genreIds || [])
     .map((id) => genres.find((genre) => genre.id === id)?.name)
@@ -13,8 +12,8 @@ export default function MovieList({ movies, genres }) {
     return <div className="container">Pas de résultats</div>;
   }
 
-  // Le premier film est deja mis en avant par MovieDetail ; le dernier est
-  // ecarte pour garder une grille pleine de 18 cartes (3 colonnes).
+  // The first movie is featured by MovieDetail; dropping the last one keeps
+  // a full grid of 18 cards.
   return (
     <div className="list">
       <div className="container">

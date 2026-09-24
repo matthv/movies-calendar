@@ -1,6 +1,5 @@
-// Les premieres versions du site (Create React App) installaient un service
-// worker qui met l'application en cache. Celui-ci le remplace, se desinscrit
-// et recharge les onglets ouverts pour qu'ils recuperent la version en ligne.
+// Early versions of the site registered a caching service worker. This one
+// replaces it, unregisters itself and reloads open tabs onto the live version.
 self.addEventListener('install', () => self.skipWaiting());
 self.addEventListener('activate', (event) => {
   event.waitUntil(

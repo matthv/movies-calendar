@@ -2,7 +2,7 @@ import '@testing-library/jest-dom/vitest';
 import { afterEach, vi } from 'vitest';
 import { cleanup } from '@testing-library/react';
 
-// Le lecteur YouTube injecte un script tiers : sans objet dans jsdom
+// The YouTube player loads a third-party script, irrelevant in jsdom
 vi.mock('react-youtube', () => ({ default: () => null }));
 
 window.scrollTo = () => {};

@@ -59,7 +59,7 @@ export default function Movie({ id }) {
   const genres = movie.genres || [];
   const companies = movie.production_companies || [];
   const directors = crew.filter((person) => person.job === 'Director');
-  // Dedoublonne : une meme personne peut etre creditee Screenplay et Story
+  // The same person can be credited for both Screenplay and Story
   const writers = crew
     .filter((person) => WRITER_JOBS.includes(person.job))
     .filter((person, i, all) => all.findIndex((other) => other.id === person.id) === i);
