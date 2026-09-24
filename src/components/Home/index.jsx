@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { useSearchParams } from 'react-router';
 import dayjs from '../../lib/dayjs';
 import { capitalize } from '../../lib/format';
 import { fetchGenres, fetchMoviesOfMonth } from '../../api/moviedb';
@@ -6,10 +7,22 @@ import MovieList from './movie_list';
 import MovieDetail from './movie_detail';
 
 const MONTHS = Array.from({ length: 12 }, (_, i) => i);
+const PARAM = 'mois';
+const PARAM_FORMAT = 'YYYY-MM';
+
+function parseMonth(value) {
+  const date = value ? dayjs(value, PARAM_FORMAT, true) : null;
+  return date?.isValid() ? date.startOf('month') : dayjs().startOf('month');
+}
 
 export default function Home() {
-  // dayjs est immuable : chaque changement produit une nouvelle date
-  const [currentDate, setCurrentDate] = useState(() => dayjs().startOf('month'));
+  // The month lives in the URL so the browser back/forward buttons work.
+  const [searchParams, setSearchParams] = useSearchParams();
+  const monthParam = searchParams.get(PARAM);
+  const currentDate = useMemo(() => parseMonth(monthParam), [monthParam]);
+  const setCurrentDate = (date) => {
+    if (!date.isSame(currentDate, 'month')) setSearchParams({ [PARAM]: date.format(PARAM_FORMAT) });
+  };
   const [movies, setMovies] = useState([]);
   const [genres, setGenres] = useState([]);
 

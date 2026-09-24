@@ -35,7 +35,6 @@ export const MOVIE = {
   keywords: { keywords: [{ id: 1, name: 'nihilism' }] },
 };
 
-// Faux fetch qui repond selon le chemin TMDB demande
 export function mockTmdb(routes) {
   return vi.spyOn(globalThis, 'fetch').mockImplementation(async (url) => {
     const { pathname, searchParams } = new URL(url);

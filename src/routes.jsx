@@ -5,8 +5,7 @@ import Home from './components/Home';
 import Movie from './components/Movie';
 import NotFound from './components/NotFound';
 
-// La clef force un nouveau montage d'un film a l'autre : sans elle, passer
-// d'une fiche a une autre via la recherche garderait les donnees du premier.
+// Remount on id change, otherwise navigating movie to movie keeps stale data.
 function MovieRoute() {
   const { id } = useParams();
   return <Movie key={id} id={id} />;

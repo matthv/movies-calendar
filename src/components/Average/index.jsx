@@ -1,4 +1,3 @@
-// Remplace react-circular-progressbar : un cercle SVG et un pourcentage.
 
 export default function Average({ percentage, strokeWidth = 7 }) {
   const value = Math.max(0, Math.min(100, Math.round(percentage || 0)));
