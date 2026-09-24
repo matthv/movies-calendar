@@ -17,6 +17,9 @@ URL=https://www.movies-calendar.com
 cd "$(dirname "$0")/.."
 umask 002
 
+# Node 22 installe en local utilisateur sur le serveur (pas de Node systeme)
+[ -x "$HOME/.local/opt/node-v22/bin/node" ] && PATH="$HOME/.local/opt/node-v22/bin:$PATH"
+
 if ! [ -w "$RELEASES" ]; then
     # Groupe ajoute mais session plus ancienne : on relance via sg
     if [ -z "${DEPLOY_SG:-}" ] && id -nG "$USER" | grep -qw movies-calendar && ! id -nG | grep -qw movies-calendar; then
