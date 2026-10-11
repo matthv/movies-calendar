@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router';
 import dayjs from '../../lib/dayjs';
 import { capitalize } from '../../lib/format';
 import { fetchGenres, fetchMoviesOfMonth } from '../../api/moviedb';
+import { usePageMeta } from '../../lib/page_meta';
 import MovieList from './movie_list';
 import MovieDetail from './movie_detail';
 
@@ -43,6 +44,13 @@ export default function Home() {
       .catch((error) => { if (error.name !== 'AbortError') console.error(error); });
     return () => controller.abort();
   }, [currentDate]);
+
+  const monthLabel = currentDate.format('MMMM YYYY');
+  usePageMeta({
+    title: `Films les plus populaires en ${monthLabel}`,
+    description: `Les films les plus populaires sortis en ${monthLabel} : affiches, notes et bandes-annonces, avec The Movie Database.`,
+    path: currentDate.isSame(dayjs(), 'month') ? '/' : `/?${PARAM}=${currentDate.format(PARAM_FORMAT)}`,
+  });
 
   const changeYear = (delta) => setCurrentDate(currentDate.add(delta, 'year').month(0));
 
