@@ -37,6 +37,12 @@ scripts/deploy.sh rollback      # retour arrière immédiat
 
 Chaque déploiement crée une release dans `/home/movies-calendar/releases/` ; la bascule se fait en changeant un lien symbolique.
 
+## Référencement
+
+- `public/robots.txt` autorise tous les robots et annonce le sitemap.
+- `npm run build` enchaîne `scripts/build-sitemap.mjs` (script `postbuild`) qui écrit `build/sitemap.xml` : l'accueil, les mois de M-12 à M+6 et les 20 films les plus populaires de chacun. Sans clef ou si TMDB ne répond pas, il ne garde que les mois et le build continue.
+- Chaque page met à jour son titre, sa description, son canonical et ses balises Open Graph (`src/lib/page_meta.js`) ; la page 404 est en `noindex`.
+
 ## Preview
 
 ![home](http://i.imgur.com/WNz6AS6.png)

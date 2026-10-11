@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import YouTube from 'react-youtube';
 import dayjs from '../../lib/dayjs';
-import { formatNumber } from '../../lib/format';
+import { formatNumber, moviePath, summary } from '../../lib/format';
+import { usePageMeta } from '../../lib/page_meta';
 import { fetchMovie, IMAGE_URL } from '../../api/moviedb';
 import Average from '../Average';
 import Character from './character';
@@ -45,6 +46,15 @@ export default function Movie({ id }) {
       .catch((error) => { if (error.name !== 'AbortError') console.error(error); });
     return () => controller.abort();
   }, [id]);
+
+  const year = movie?.release_date?.slice(0, 4);
+  usePageMeta({
+    title: movie && (year ? `${movie.title} (${year})` : movie.title),
+    description: summary(movie?.overview),
+    path: movie && moviePath(movie),
+    image: movie?.poster_path && `${IMAGE_URL}w500${movie.poster_path}`,
+    type: 'video.movie',
+  });
 
   if (!movie) {
     return <div className="movie container">Chargement…</div>;

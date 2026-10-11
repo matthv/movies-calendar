@@ -52,12 +52,15 @@ describe('Home', () => {
     expect(await screen.findByRole('heading', { name: /en mars/ })).toBeInTheDocument();
     expect(screen.getByText('2020')).toBeInTheDocument();
     expect(lastDiscoverStart()).toBe('2020-03-01');
+    expect(document.title).toBe('Films les plus populaires en mars 2020 – Movies Calendar');
+    expect(document.querySelector('link[rel="canonical"]').href).toBe('https://www.movies-calendar.com/?mois=2020-03');
   });
 
   it('ignore un mois invalide dans l URL', async () => {
     renderHome('/?mois=n-importe-quoi');
     expect(await screen.findByText('Premier')).toBeInTheDocument();
     expect(screen.getByText(String(new Date().getFullYear()))).toBeInTheDocument();
+    expect(document.querySelector('link[rel="canonical"]').href).toBe('https://www.movies-calendar.com/');
   });
 
   it('revient au mois et a l annee precedents avec l historique', async () => {

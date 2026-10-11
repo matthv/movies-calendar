@@ -17,5 +17,10 @@ describe('Movie', () => {
     expect(screen.getByText(/63.000.000 \$/)).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: 'Images' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /Regarder la Bande annonce/ })).toBeInTheDocument();
+
+    expect(document.title).toBe('Fight Club (1999) – Movies Calendar');
+    expect(document.querySelector('meta[name="description"]').content).toBe('Le narrateur...');
+    expect(document.querySelector('link[rel="canonical"]').href).toBe('https://www.movies-calendar.com/movie/550/fight-club');
+    expect(document.querySelector('meta[property="og:image"]').content).toBe('https://image.tmdb.org/t/p/w500/poster.jpg');
   });
 });
