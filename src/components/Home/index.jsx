@@ -78,7 +78,7 @@ export default function Home() {
             </div>
           </div>
           <div className="col-sm-12">
-            <h2>Les plus populaires en {currentDate.format('MMMM')}</h2>
+            <h1 className="h2 month-title">Les films les plus populaires en {monthLabel}</h1>
           </div>
         </div>
       </div>
