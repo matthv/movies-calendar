@@ -49,7 +49,7 @@ describe('Home', () => {
   it('lit le mois depuis l URL', async () => {
     const { lastDiscoverStart } = renderHome('/?mois=2020-03');
 
-    expect(await screen.findByRole('heading', { name: /en mars/ })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { level: 1, name: 'Les films les plus populaires en mars 2020' })).toBeInTheDocument();
     expect(screen.getByText('2020')).toBeInTheDocument();
     expect(lastDiscoverStart()).toBe('2020-03-01');
     expect(document.title).toBe('Films les plus populaires en mars 2020 – Movies Calendar');

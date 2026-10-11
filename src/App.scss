@@ -24,7 +24,8 @@ h1 {
   text-transform: uppercase;
 }
 
-h2 {
+// .month-title: the home page h1, drawn like the other section titles
+h2, .month-title {
   position: relative;
   display: inline-block;
   padding: 10px 20px;
@@ -136,7 +137,7 @@ footer {
   .movie-detail {
     margin: 0px auto 40px;
   }
-  h2 {
+  h2, .month-title {
     margin-top: 40px;
   }
 }
@@ -460,7 +461,7 @@ label {
     font-size: 1.5em;
   }
 
-  h2 {
+  h2, h1.month-title {
     font-size: 1em;
     &:after {
       right: -13px;
