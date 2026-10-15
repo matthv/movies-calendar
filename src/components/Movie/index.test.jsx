@@ -22,5 +22,14 @@ describe('Movie', () => {
     expect(document.querySelector('meta[name="description"]').content).toBe('Le narrateur...');
     expect(document.querySelector('link[rel="canonical"]').href).toBe('https://www.movies-calendar.com/movie/550/fight-club');
     expect(document.querySelector('meta[property="og:image"]').content).toBe('https://image.tmdb.org/t/p/w500/poster.jpg');
+    expect(document.querySelector('meta[name="robots"]')).toBeNull();
+  });
+
+  it('demande de ne pas indexer une fiche sans synopsis', async () => {
+    mockTmdb({ 'movie/550': { ...MOVIE, overview: '' } });
+    render(<Movie id="550" />);
+
+    expect(await screen.findByRole('heading', { name: 'Fight Club' })).toBeInTheDocument();
+    expect(document.querySelector('meta[name="robots"]').content).toBe('noindex');
   });
 });

@@ -3,7 +3,7 @@
 import { writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import { SITE_URL, moviePath } from '../src/lib/format.js';
+import { SITE_URL, isIndexable, moviePath } from '../src/lib/format.js';
 
 const MONTHS_BEFORE = 12;
 const MONTHS_AFTER = 6;
@@ -54,7 +54,9 @@ export async function sitemapPaths({ apiKey, today = new Date(), delay = DELAY_M
   const moviePaths = new Set();
   try {
     for (const month of months) {
-      for (const movie of await fetchMoviesOfMonth(apiKey, month)) moviePaths.add(moviePath(movie));
+      for (const movie of await fetchMoviesOfMonth(apiKey, month)) {
+        if (isIndexable(movie)) moviePaths.add(moviePath(movie));
+      }
       if (delay) await new Promise((done) => setTimeout(done, delay));
     }
   } catch (error) {

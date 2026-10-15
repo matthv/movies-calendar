@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import YouTube from 'react-youtube';
 import dayjs from '../../lib/dayjs';
-import { formatNumber, moviePath, summary } from '../../lib/format';
+import { formatNumber, isIndexable, moviePath, summary } from '../../lib/format';
 import { usePageMeta } from '../../lib/page_meta';
 import { fetchMovie, IMAGE_URL } from '../../api/moviedb';
 import Average from '../Average';
@@ -54,6 +54,7 @@ export default function Movie({ id }) {
     path: movie && moviePath(movie),
     image: movie?.poster_path && `${IMAGE_URL}w500${movie.poster_path}`,
     type: 'video.movie',
+    noindex: Boolean(movie) && !isIndexable(movie),
   });
 
   if (!movie) {
