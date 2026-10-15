@@ -85,4 +85,34 @@ describe('Home', () => {
     expect(await screen.findByRole('heading', { name: /en mars/ })).toBeInTheDocument();
     expect(lastDiscoverStart()).toBe('2020-03-01');
   });
+
+  it('charge plus de films jusqu a 49', async () => {
+    const page = (n) => Array.from({ length: 20 }, (_, i) => ({
+      id: n * 100 + i, title: `Film ${n}-${i}`, overview: '', vote_average: 5, genre_ids: [], poster_path: null, backdrop_path: null,
+    }));
+    mockTmdb({
+      'genre/movie/list': { genres: GENRES },
+      // Page 2 repeats a movie of page 1, as TMDB does when popularity moves
+      'discover/movie': (params) => {
+        const n = Number(params.get('page'));
+        const results = page(n);
+        if (n === 2) results[0] = page(1)[5];
+        return { results, total_pages: 165 };
+      },
+    });
+    render(<MemoryRouter><Home /></MemoryRouter>);
+
+    const cards = () => document.querySelectorAll('.list .card').length;
+    expect(await screen.findByRole('link', { name: 'Détail de Film 1-1' })).toBeInTheDocument();
+    expect(cards()).toBe(18);
+
+    await userEvent.click(screen.getByRole('button', { name: 'Plus de films' }));
+    await screen.findByRole('link', { name: 'Détail de Film 2-1' });
+    expect(cards()).toBe(36);
+
+    await userEvent.click(screen.getByRole('button', { name: 'Plus de films' }));
+    await screen.findByRole('link', { name: 'Détail de Film 3-1' });
+    expect(cards()).toBe(48);
+    expect(screen.queryByRole('button', { name: 'Plus de films' })).toBeNull();
+  });
 });

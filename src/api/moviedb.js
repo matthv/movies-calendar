@@ -20,12 +20,13 @@ export function fetchGenres(signal) {
   return get('genre/movie/list', {}, signal).then((data) => data.genres);
 }
 
-export function fetchMoviesOfMonth(startDate, endDate, signal) {
+export function fetchMoviesOfMonth(startDate, endDate, signal, page = 1) {
   return get('discover/movie', {
     'primary_release_date.gte': startDate,
     'primary_release_date.lte': endDate,
     sort_by: 'popularity.desc',
-  }, signal).then((data) => data.results);
+    page,
+  }, signal).then((data) => ({ results: data.results, totalPages: data.total_pages || 1 }));
 }
 
 export function searchMovies(query, signal) {

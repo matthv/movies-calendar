@@ -7,18 +7,24 @@ function genreNames(genreIds, genres) {
     .filter(Boolean);
 }
 
-export default function MovieList({ movies, genres }) {
+// The grid has 2 or 3 columns: while more movies can be loaded, show a
+// multiple of 6 so every row is full. Once complete, show them all.
+export function gridMovies(movies, complete) {
+  const rest = movies.slice(1);
+  return complete ? rest : rest.slice(0, Math.floor(rest.length / 6) * 6);
+}
+
+export default function MovieList({ movies, genres, complete }) {
   if (movies.length === 0) {
     return <div className="container">Pas de résultats</div>;
   }
 
-  // The first movie is featured by MovieDetail; dropping the last one keeps
-  // a full grid of 18 cards.
+  // The first movie is featured by MovieDetail
   return (
     <div className="list">
       <div className="container">
         <div className="row">
-          {movies.slice(1, -1).map((movie) => (
+          {gridMovies(movies, complete).map((movie) => (
             <MovieItem movie={movie} key={movie.id} genres={genreNames(movie.genre_ids, genres)} />
           ))}
         </div>

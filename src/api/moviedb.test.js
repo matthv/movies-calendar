@@ -14,6 +14,7 @@ describe('client TMDB', () => {
     expect(url.searchParams.get('primary_release_date.gte')).toBe('2026-09-01');
     expect(url.searchParams.get('primary_release_date.lte')).toBe('2026-09-30');
     expect(url.searchParams.get('sort_by')).toBe('popularity.desc');
+    expect(url.searchParams.get('page')).toBe('1');
   });
 
   it('encode la recherche', async () => {
