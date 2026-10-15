@@ -308,18 +308,44 @@ label {
   }
 }
 
-.character {
-  height: 168px;
+.card.character {
+  display: block;
+  width: 100%;
+  height: 135px;
+  max-height: 135px;
   margin-bottom: 20px;
-  img {
+  padding: 15px 15px 15px 105px;
+  text-align: left;
+  overflow: hidden;
+  cursor: pointer;
+  outline: 2px solid transparent;
+  transition: outline-color .15s;
+  &:hover, &:focus-visible {
+    outline-color: $tertiary;
+  }
+  .card-img-top {
     position: absolute;
     top: 0;
     left: 0;
-    max-width: 112px;
+    width: 90px;
+    height: 135px;
+    object-fit: cover;
   }
   .card-text {
-    margin-left: 100px;
-    font-size: 1.2em;
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .name {
+    font-weight: bold;
+    font-size: 1.1em;
+    white-space: nowrap;
+  }
+  .role {
+    margin-top: 5px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
   }
 }
 
@@ -330,6 +356,59 @@ label {
   border: 2px solid $tertiary;
   .modal-header {
     border-color: $tertiary;
+  }
+}
+
+.person-modal {
+  a {
+    color: $secondary;
+    text-decoration: none;
+  }
+  .person-header {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+    img {
+      width: 150px;
+      align-self: flex-start;
+    }
+  }
+  .lifespan {
+    color: color.adjust($secondary, $lightness: -25%);
+  }
+  .biography {
+    white-space: pre-line;
+  }
+  h3 {
+    font-size: 1.2em;
+    margin-bottom: 15px;
+  }
+  .filmography {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 15px;
+  }
+  .film {
+    display: flex;
+    flex-direction: column;
+    font-size: .85em;
+    img {
+      width: 100%;
+      aspect-ratio: 2 / 3;
+      object-fit: cover;
+      margin-bottom: 5px;
+      outline: 2px solid transparent;
+      transition: outline-color .15s;
+    }
+    &:hover img, &:focus-visible img {
+      outline-color: $tertiary;
+    }
+    .title {
+      font-weight: bold;
+    }
+    .year, .role {
+      color: color.adjust($secondary, $lightness: -35%);
+    }
   }
 }
 
@@ -509,12 +588,17 @@ label {
       height: 250px;
     }
     &.character {
-      height: 168px;
-      max-height: 168px;
+      height: 135px;
+      max-height: 135px;
       .card-img-top {
-        height: 168px;
+        height: 135px;
       }
     }
+  }
+
+  .person-modal .person-header {
+    flex-direction: column;
+    align-items: center;
   }
 
   .main-search .search-form .search {

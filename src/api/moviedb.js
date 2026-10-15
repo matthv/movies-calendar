@@ -38,3 +38,13 @@ export function fetchMovie(id, signal) {
     include_image_language: 'null',
   }, signal);
 }
+
+// Many French biographies are empty on TMDB: fall back to the English one.
+export async function fetchPerson(id, signal) {
+  const person = await get(`person/${id}`, { append_to_response: 'movie_credits' }, signal);
+  if (person.biography?.trim()) return person;
+  const english = await get(`person/${id}`, { language: 'en-US' }, signal);
+  return english.biography?.trim()
+    ? { ...person, biography: english.biography, biographyLanguage: 'en' }
+    : person;
+}

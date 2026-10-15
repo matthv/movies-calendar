@@ -1,23 +1,23 @@
 import { useEffect, useState } from 'react';
 import YouTube from 'react-youtube';
-import dayjs from '../../lib/dayjs';
+import { formatDate } from '../../lib/dates';
 import { formatNumber, isIndexable, moviePath, summary } from '../../lib/format';
 import { usePageMeta } from '../../lib/page_meta';
 import { fetchMovie, IMAGE_URL } from '../../api/moviedb';
 import Average from '../Average';
 import Character from './character';
+import PersonModal from './person_modal';
 import Trailer from './trailer';
 import LightboxImages from './lightbox_images';
 
 const WRITER_JOBS = ['Screenplay', 'Writer', 'Story'];
+const CAST_PREVIEW = 12;
 
 const BACKGROUND_VIDEO_OPTS = {
   width: '100%',
   height: '500',
   playerVars: { autoplay: 1, fs: 1, loop: 1, controls: 0, disablekb: 1, rel: 0 },
 };
-
-const formatDate = (date) => (date ? dayjs(date, 'YYYY-MM-DD').format('DD/MM/YYYY') : null);
 
 function formatRuntime(minutes) {
   if (!minutes) return null;
@@ -37,6 +37,8 @@ function Names({ items }) {
 
 export default function Movie({ id }) {
   const [movie, setMovie] = useState(null);
+  const [showAllCast, setShowAllCast] = useState(false);
+  const [personId, setPersonId] = useState(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -62,7 +64,8 @@ export default function Movie({ id }) {
   }
 
   const crew = movie.credits?.crew || [];
-  const cast = (movie.credits?.cast || []).slice(0, 6);
+  const cast = movie.credits?.cast || [];
+  const shownCast = showAllCast ? cast : cast.slice(0, CAST_PREVIEW);
   const videos = movie.videos?.results || [];
   const mainVideo = videos[0]?.key;
   const releaseFr = movie.releases?.countries?.find((country) => country.iso_3166_1 === 'FR');
@@ -164,10 +167,16 @@ export default function Movie({ id }) {
             <p>{movie.overview}</p>
             {cast.length > 0 && <h2>Casting</h2>}
             <div className="row">
-              {cast.map((character) => (
-                <Character character={character} key={character.credit_id} />
+              {shownCast.map((character) => (
+                <Character character={character} key={character.credit_id} onSelect={setPersonId} />
               ))}
             </div>
+            {shownCast.length < cast.length && (
+              <button type="button" className="btn btn-pink mb-4" onClick={() => setShowAllCast(true)}>
+                Voir tout le casting ({cast.length})
+              </button>
+            )}
+            <PersonModal personId={personId} onHide={() => setPersonId(null)} />
             <div className="row">
               <div className="col-sm-12">
                 {(posters.length > 0 || photos.length > 0) && <h2>Images</h2>}
