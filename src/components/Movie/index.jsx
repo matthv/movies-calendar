@@ -103,31 +103,31 @@ export default function Movie({ id }) {
                   <h1 className="mt-2">{movie.title}</h1>
                   <div className="movie-resume">
                     <div className="row">
-                      <div className="col-sm-4 mb-4">
+                      <div className="col-6 col-sm-4 mb-4">
                         <label>Titre original</label>
                         {movie.original_title}
                       </div>
-                      <div className="col-sm-4 mb-4">
+                      <div className="col-6 col-sm-4 mb-4">
                         <label>Réalisation</label>
                         <Names items={directors} />
                       </div>
-                      <div className="col-sm-4 mb-4">
+                      <div className="col-6 col-sm-4 mb-4">
                         <label>Scénario</label>
                         <Names items={writers} />
                       </div>
-                      <div className="col-sm-4 mb-4">
+                      <div className="col-6 col-sm-4 mb-4">
                         <label>Durée</label>
                         {formatRuntime(movie.runtime)}
                       </div>
-                      <div className="col-sm-4 mb-4">
+                      <div className="col-6 col-sm-4 mb-4">
                         <label>Pays d'origine</label>
                         {movie.production_countries?.[0]?.name}
                       </div>
-                      <div className="col-sm-4 mb-4">
+                      <div className="col-6 col-sm-4 mb-4">
                         <label>Date de sortie</label>
                         {formatDate(movie.release_date)}
                       </div>
-                      <div className="col-sm-4 mb-4">
+                      <div className="col-6 col-sm-4 mb-4">
                         <label>Date de sortie en France</label>
                         {formatDate(releaseFr?.release_date)}
                       </div>
