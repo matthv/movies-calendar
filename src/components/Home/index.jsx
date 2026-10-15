@@ -10,6 +10,8 @@ import MovieDetail from './movie_detail';
 const MONTHS = Array.from({ length: 12 }, (_, i) => i);
 const PARAM = 'mois';
 const PARAM_FORMAT = 'YYYY-MM';
+// Featured movie + 48 cards: further down TMDB only has obscure titles
+const MAX_MOVIES = 49;
 
 function parseMonth(value) {
   const date = value ? dayjs(value, PARAM_FORMAT, true) : null;
@@ -24,7 +26,9 @@ export default function Home() {
   const setCurrentDate = (date) => {
     if (!date.isSame(currentDate, 'month')) setSearchParams({ [PARAM]: date.format(PARAM_FORMAT) });
   };
-  const [movies, setMovies] = useState([]);
+  // Pages of the month loaded so far, tagged with their month to ignore stale ones
+  const [list, setList] = useState({ month: null, movies: [], page: 0, totalPages: 0 });
+  const [loadingMore, setLoadingMore] = useState(false);
   const [genres, setGenres] = useState([]);
 
   useEffect(() => {
@@ -35,15 +39,35 @@ export default function Home() {
     return () => controller.abort();
   }, []);
 
+  const monthKey = currentDate.format(PARAM_FORMAT);
+  const start = currentDate.startOf('month').format('YYYY-MM-DD');
+  const end = currentDate.endOf('month').format('YYYY-MM-DD');
+
   useEffect(() => {
     const controller = new AbortController();
-    const start = currentDate.startOf('month').format('YYYY-MM-DD');
-    const end = currentDate.endOf('month').format('YYYY-MM-DD');
     fetchMoviesOfMonth(start, end, controller.signal)
-      .then(setMovies)
+      .then(({ results, totalPages }) => setList({ month: monthKey, movies: results, page: 1, totalPages }))
       .catch((error) => { if (error.name !== 'AbortError') console.error(error); });
     return () => controller.abort();
-  }, [currentDate]);
+  }, [monthKey, start, end]);
+
+  // The previous month stays on screen until the new one arrives, without its button
+  const hasMore = list.page < list.totalPages && list.movies.length <= MAX_MOVIES;
+  const canLoadMore = list.month === monthKey && hasMore;
+
+  const loadMore = () => {
+    setLoadingMore(true);
+    fetchMoviesOfMonth(start, end, undefined, list.page + 1)
+      .then(({ results, totalPages }) => setList((previous) => {
+        if (previous.month !== monthKey) return previous;
+        // Popularity shifts between calls: a movie can show up on two pages
+        const known = new Set(previous.movies.map((movie) => movie.id));
+        const movies = [...previous.movies, ...results.filter((movie) => !known.has(movie.id))];
+        return { ...previous, movies, page: previous.page + 1, totalPages };
+      }))
+      .catch((error) => console.error(error))
+      .finally(() => setLoadingMore(false));
+  };
 
   const monthLabel = currentDate.format('MMMM YYYY');
   usePageMeta({
@@ -82,8 +106,15 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <MovieDetail movie={movies[0]} />
-      <MovieList movies={movies} genres={genres} />
+      <MovieDetail movie={list.movies[0]} />
+      <MovieList movies={list.movies.slice(0, MAX_MOVIES)} genres={genres} complete={!hasMore} />
+      {canLoadMore && (
+        <div className="container text-center mb-5">
+          <button type="button" className="btn btn-pink" disabled={loadingMore} onClick={loadMore}>
+            {loadingMore ? 'Chargement…' : 'Plus de films'}
+          </button>
+        </div>
+      )}
     </div>
   );
 }
