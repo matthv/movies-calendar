@@ -19,7 +19,11 @@ describe('sitemap', () => {
 
   it('ajoute les films de chaque mois, sans doublon', async () => {
     const fetchSpy = mockTmdb({
-      'discover/movie': { results: [{ id: 1, title: 'Été Indien' }, { id: 2, title: 'Autre' }] },
+      'discover/movie': { results: [
+        { id: 1, title: 'Été Indien', overview: 'Un été.' },
+        { id: 2, title: 'Autre', overview: 'Un autre.' },
+        { id: 3, title: 'Sans synopsis', overview: '' },
+      ] },
     });
     const paths = await sitemapPaths({ apiKey: 'k', today: TODAY, delay: 0 });
 
@@ -28,6 +32,7 @@ describe('sitemap', () => {
     expect(paths).toContain('/?mois=2026-09');
     expect(paths).toContain('/movie/1/ete-indien');
     expect(paths.filter((path) => path.startsWith('/movie/'))).toHaveLength(2);
+    expect(paths).not.toContain('/movie/3/sans-synopsis');
     expect(fetchSpy).toHaveBeenCalledTimes(19);
   });
 

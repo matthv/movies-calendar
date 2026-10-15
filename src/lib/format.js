@@ -12,8 +12,16 @@ export function capitalize(text) {
   return text ? text.charAt(0).toUpperCase() + text.slice(1) : text;
 }
 
+// Punctuation becomes a word break ("Henry Danger: The Movie", "L'Internat"),
+// then strict mode drops what slugify can't transliterate (CJK titles -> 'detail').
 export function movieSlug(title) {
-  return slugify((title || '').toLowerCase()) || 'detail';
+  const words = (title || '').replace(/[^\p{L}\p{N}]+/gu, ' ');
+  return slugify(words, { lower: true, strict: true }) || 'detail';
+}
+
+// Without a synopsis the page is an empty template: kept out of the index.
+export function isIndexable(movie) {
+  return Boolean(movie?.overview?.trim());
 }
 
 export function moviePath(movie) {
