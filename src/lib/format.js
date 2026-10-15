@@ -35,3 +35,26 @@ export function summary(text, max = 160) {
   const lastSpace = cut.lastIndexOf(' ');
   return `${(lastSpace > max / 2 ? cut.slice(0, lastSpace) : cut).replace(/[\s,;:.]+$/, '')}…`;
 }
+
+// One entry per movie (an actor can be credited twice), newest first, undated last.
+export function filmography(credits) {
+  const byId = new Map();
+  for (const credit of credits?.cast || []) {
+    const known = byId.get(credit.id);
+    if (!known) {
+      byId.set(credit.id, { ...credit });
+    } else if (credit.character && !known.character?.includes(credit.character)) {
+      known.character = known.character ? `${known.character} / ${credit.character}` : credit.character;
+    }
+  }
+  return [...byId.values()].sort((a, b) => {
+    if (!a.release_date || !b.release_date) return (a.release_date ? 0 : 1) - (b.release_date ? 0 : 1);
+    return b.release_date.localeCompare(a.release_date);
+  });
+}
+
+export function knownFor(credits, count = 8) {
+  return filmography(credits)
+    .sort((a, b) => (b.vote_count || 0) - (a.vote_count || 0))
+    .slice(0, count);
+}

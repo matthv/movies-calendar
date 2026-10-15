@@ -24,7 +24,7 @@ export const MOVIE = {
   production_countries: [{ name: 'Germany' }],
   releases: { countries: [{ iso_3166_1: 'FR', release_date: '1999-11-10' }] },
   credits: {
-    cast: [{ credit_id: 'c1', cast_id: 1, name: 'Edward Norton', character: 'Narrator', profile_path: null }],
+    cast: [{ credit_id: 'c1', cast_id: 1, id: 819, name: 'Edward Norton', character: 'Narrator', profile_path: null }],
     crew: [
       { credit_id: 'd1', id: 7467, name: 'David Fincher', job: 'Director' },
       { credit_id: 'w1', id: 7468, name: 'Jim Uhls', job: 'Screenplay' },
@@ -33,6 +33,25 @@ export const MOVIE = {
   images: { posters: [{ file_path: '/a1.jpg' }], backdrops: [{ file_path: '/b1.jpg' }] },
   videos: { results: [{ key: 'yt1' }] },
   keywords: { keywords: [{ id: 1, name: 'nihilism' }] },
+};
+
+export const PERSON = {
+  id: 819,
+  name: 'Edward Norton',
+  biography: '',
+  birthday: '1969-08-18',
+  deathday: null,
+  place_of_birth: 'Boston, Massachusetts, USA',
+  profile_path: null,
+  movie_credits: {
+    cast: [
+      { id: 550, title: 'Fight Club', release_date: '1999-10-15', character: 'Narrator', vote_count: 30000, poster_path: null },
+      { id: 600, title: 'Projet à venir', release_date: '', character: '', vote_count: 0, poster_path: null },
+      { id: 700, title: 'American History X', release_date: '1998-10-30', character: 'Derek', vote_count: 12000, poster_path: null },
+      { id: 700, title: 'American History X', release_date: '1998-10-30', character: 'Narrateur', vote_count: 12000, poster_path: null },
+      { id: 800, title: 'Le Pacte', release_date: '2001-03-01', character: 'Jack', vote_count: 10, poster_path: null },
+    ],
+  },
 };
 
 export function mockTmdb(routes) {

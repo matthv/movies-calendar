@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
-import { fetchMoviesOfMonth, fetchMovie, searchMovies } from './moviedb';
+import { fetchMoviesOfMonth, fetchMovie, fetchPerson, searchMovies } from './moviedb';
+import { PERSON, mockTmdb } from '../test/fixtures';
 
 describe('client TMDB', () => {
   it('construit l URL avec la clef, la langue et les parametres', async () => {
@@ -24,5 +25,23 @@ describe('client TMDB', () => {
   it('echoue sur une reponse HTTP en erreur', async () => {
     vi.spyOn(globalThis, 'fetch').mockResolvedValue(new Response('{}', { status: 401 }));
     await expect(fetchMovie(550)).rejects.toThrow('HTTP 401');
+  });
+
+  it('charge une personne avec sa filmographie', async () => {
+    const fetchSpy = mockTmdb({ 'person/819': { ...PERSON, biography: 'Acteur americain.' } });
+    const person = await fetchPerson(819);
+    expect(person.biography).toBe('Acteur americain.');
+    expect(fetchSpy).toHaveBeenCalledTimes(1);
+    expect(new URL(fetchSpy.mock.calls[0][0]).searchParams.get('append_to_response')).toBe('movie_credits');
+  });
+
+  it('prend la biographie anglaise quand la francaise est vide', async () => {
+    mockTmdb({
+      'person/819': (params) => (params.get('language') === 'en-US' ? { biography: 'American actor.' } : PERSON),
+    });
+    const person = await fetchPerson(819);
+    expect(person.biography).toBe('American actor.');
+    expect(person.biographyLanguage).toBe('en');
+    expect(person.movie_credits.cast).toHaveLength(5);
   });
 });
