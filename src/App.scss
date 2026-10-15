@@ -31,13 +31,16 @@ h2, .month-title {
   padding: 10px 20px;
   background: $tertiary;
   margin-bottom: 20px;
+  // Sized from the title itself, so it stays glued whatever the responsive font size
   &:after {
     content: "";
     position: absolute;
-    right: -32px;
+    top: 0;
     bottom: 0;
-    border-top: 55px solid transparent;
-    border-left: 1em solid $tertiary;
+    left: calc(100% - 1px);
+    width: calc(1em + 1px);
+    background: $tertiary;
+    clip-path: polygon(0 0, 100% 100%, 0 100%);
   }
 }
 
@@ -543,10 +546,6 @@ label {
 
   h2, h1.month-title {
     font-size: 1em;
-    &:after {
-      right: -13px;
-      border-top: 35px solid transparent;
-    }
   }
 
   .btn-pink {
