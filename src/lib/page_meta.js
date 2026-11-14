@@ -1,8 +1,5 @@
 import { useEffect } from 'react';
-import { SITE_URL } from './format';
-
-const SITE_NAME = 'Movies Calendar';
-const DEFAULT_DESCRIPTION = 'Les films les plus populaires, mois par mois, avec The Movie Database.';
+import { DEFAULT_DESCRIPTION, SITE_URL, fullTitle } from './format';
 
 function headElement(tag, key, value) {
   let element = document.head.querySelector(`${tag}[${key}="${value}"]`);
@@ -23,15 +20,15 @@ function setHead(tag, key, value, attribute, content) {
 // ones: hoisting would leave two <title> and two descriptions in the head.
 export function usePageMeta({ title, description, path, image, type = 'website', noindex = false }) {
   useEffect(() => {
-    const fullTitle = title ? `${title} – ${SITE_NAME}` : SITE_NAME;
+    const pageTitle = fullTitle(title);
     const text = description || DEFAULT_DESCRIPTION;
     const url = path ? `${SITE_URL}${path}` : null;
 
-    document.title = fullTitle;
+    document.title = pageTitle;
     setHead('meta', 'name', 'description', 'content', text);
     setHead('meta', 'name', 'robots', 'content', noindex ? 'noindex' : null);
     setHead('link', 'rel', 'canonical', 'href', url);
-    setHead('meta', 'property', 'og:title', 'content', fullTitle);
+    setHead('meta', 'property', 'og:title', 'content', pageTitle);
     setHead('meta', 'property', 'og:description', 'content', text);
     setHead('meta', 'property', 'og:url', 'content', url);
     setHead('meta', 'property', 'og:type', 'content', type);

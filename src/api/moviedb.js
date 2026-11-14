@@ -2,7 +2,7 @@ const API_KEY = import.meta.env.REACT_APP_MOVIEDB_API_KEY;
 const LANG = 'fr';
 const ROOT_URL = 'https://api.themoviedb.org/3/';
 
-export const IMAGE_URL = 'https://image.tmdb.org/t/p/';
+export { IMAGE_URL } from '../lib/format';
 
 async function get(path, params = {}, signal) {
   const query = new URLSearchParams({ api_key: API_KEY, language: LANG });
