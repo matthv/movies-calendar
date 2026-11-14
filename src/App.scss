@@ -363,6 +363,17 @@ label {
   }
 }
 
+// Static content served to crawlers, replaced by the app once it loads
+.prerender {
+  padding: 40px 15px;
+  ul, ol {
+    padding-left: 20px;
+  }
+  a {
+    color: $secondary;
+  }
+}
+
 .person-modal {
   a {
     color: $secondary;

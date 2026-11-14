@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import YouTube from 'react-youtube';
 import { formatDate } from '../../lib/dates';
-import { formatNumber, isIndexable, moviePath, summary } from '../../lib/format';
+import { formatNumber, movieMeta } from '../../lib/format';
 import { usePageMeta } from '../../lib/page_meta';
 import { fetchMovie, IMAGE_URL } from '../../api/moviedb';
 import Average from '../Average';
@@ -49,15 +49,7 @@ export default function Movie({ id }) {
     return () => controller.abort();
   }, [id]);
 
-  const year = movie?.release_date?.slice(0, 4);
-  usePageMeta({
-    title: movie && (year ? `${movie.title} (${year})` : movie.title),
-    description: summary(movie?.overview),
-    path: movie && moviePath(movie),
-    image: movie?.poster_path && `${IMAGE_URL}w500${movie.poster_path}`,
-    type: 'video.movie',
-    noindex: Boolean(movie) && !isIndexable(movie),
-  });
+  usePageMeta(movie ? movieMeta(movie) : { type: 'video.movie' });
 
   if (!movie) {
     return <div className="movie container">Chargement…</div>;

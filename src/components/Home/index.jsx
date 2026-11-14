@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router';
 import dayjs from '../../lib/dayjs';
-import { capitalize } from '../../lib/format';
+import { capitalize, monthMeta } from '../../lib/format';
 import { fetchGenres, fetchMoviesOfMonth } from '../../api/moviedb';
 import { usePageMeta } from '../../lib/page_meta';
 import MovieList from './movie_list';
@@ -69,12 +69,8 @@ export default function Home() {
       .finally(() => setLoadingMore(false));
   };
 
-  const monthLabel = currentDate.format('MMMM YYYY');
-  usePageMeta({
-    title: `Films les plus populaires en ${monthLabel}`,
-    description: `Les films les plus populaires sortis en ${monthLabel} : affiches, notes et bandes-annonces, avec The Movie Database.`,
-    path: currentDate.isSame(dayjs(), 'month') ? '/' : `/?${PARAM}=${currentDate.format(PARAM_FORMAT)}`,
-  });
+  const meta = monthMeta(monthKey, dayjs().format(PARAM_FORMAT));
+  usePageMeta(meta);
 
   const changeYear = (delta) => setCurrentDate(currentDate.add(delta, 'year').month(0));
 
@@ -102,7 +98,7 @@ export default function Home() {
             </div>
           </div>
           <div className="col-sm-12">
-            <h1 className="h2 month-title">Les films les plus populaires en {monthLabel}</h1>
+            <h1 className="h2 month-title">Les films les plus populaires en {meta.label}</h1>
           </div>
         </div>
       </div>

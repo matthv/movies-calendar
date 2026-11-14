@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { personAge } from './dates';
-import { filmography, isIndexable, knownFor, movieSlug, summary } from './format';
+import { filmography, fullTitle, isIndexable, knownFor, monthMeta, movieMeta, movieSlug, summary } from './format';
+import dayjs from './dayjs';
 import { PERSON } from '../test/fixtures';
 
 describe('summary', () => {
@@ -61,5 +62,40 @@ describe('filmography', () => {
 describe('knownFor', () => {
   it('garde les films les plus votes', () => {
     expect(knownFor(PERSON.movie_credits, 2).map((film) => film.id)).toEqual([550, 700]);
+  });
+});
+
+describe('metadonnees', () => {
+  it('compose le titre complet', () => {
+    expect(fullTitle('Fight Club (1999)')).toBe('Fight Club (1999) – Movies Calendar');
+    expect(fullTitle(undefined)).toBe('Movies Calendar');
+  });
+
+  it('decrit une fiche film', () => {
+    const meta = movieMeta({ id: 550, title: 'Fight Club', overview: 'Le narrateur...', release_date: '1999-10-15', poster_path: '/p.jpg' });
+    expect(meta).toEqual({
+      title: 'Fight Club (1999)',
+      description: 'Le narrateur...',
+      path: '/movie/550/fight-club',
+      image: 'https://image.tmdb.org/t/p/w500/p.jpg',
+      type: 'video.movie',
+      noindex: false,
+    });
+    expect(movieMeta({ id: 1, title: 'X', overview: '' })).toMatchObject({ title: 'X', image: null, noindex: true });
+  });
+
+  it('nomme les mois comme dayjs le faisait', () => {
+    for (let m = 0; m < 12; m++) {
+      const date = dayjs(new Date(2026, m, 15));
+      expect(monthMeta(date.format('YYYY-MM'), '2000-01').label).toBe(date.format('MMMM YYYY'));
+    }
+  });
+
+  it('donne l accueil comme adresse du mois courant', () => {
+    expect(monthMeta('2026-11', '2026-11').path).toBe('/');
+    expect(monthMeta('2026-10', '2026-11')).toMatchObject({
+      path: '/?mois=2026-10',
+      title: 'Films les plus populaires en octobre 2026',
+    });
   });
 });

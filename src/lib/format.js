@@ -1,6 +1,9 @@
 import slugify from 'slugify';
 
 export const SITE_URL = 'https://www.movies-calendar.com';
+export const SITE_NAME = 'Movies Calendar';
+export const DEFAULT_DESCRIPTION = 'Les films les plus populaires, mois par mois, avec The Movie Database.';
+export const IMAGE_URL = 'https://image.tmdb.org/t/p/';
 
 const numberFormat = new Intl.NumberFormat('fr-FR');
 
@@ -34,6 +37,37 @@ export function summary(text, max = 160) {
   const cut = text.slice(0, max - 1);
   const lastSpace = cut.lastIndexOf(' ');
   return `${(lastSpace > max / 2 ? cut.slice(0, lastSpace) : cut).replace(/[\s,;:.]+$/, '')}…`;
+}
+
+export function fullTitle(title) {
+  return title ? `${title} – ${SITE_NAME}` : SITE_NAME;
+}
+
+// Head tags of a movie page: shared by the app and the build-time pre-render.
+export function movieMeta(movie) {
+  const year = movie.release_date?.slice(0, 4);
+  return {
+    title: year ? `${movie.title} (${year})` : movie.title,
+    description: summary(movie.overview),
+    path: moviePath(movie),
+    image: movie.poster_path ? `${IMAGE_URL}w500${movie.poster_path}` : null,
+    type: 'video.movie',
+    noindex: !isIndexable(movie),
+  };
+}
+
+const monthFormat = new Intl.DateTimeFormat('fr-FR', { month: 'long', year: 'numeric', timeZone: 'UTC' });
+
+// month and currentMonth are 'YYYY-MM', the format of the home page ?mois= parameter
+export function monthMeta(month, currentMonth) {
+  const [year, m] = month.split('-').map(Number);
+  const label = monthFormat.format(new Date(Date.UTC(year, m - 1, 1)));
+  return {
+    label,
+    title: `Films les plus populaires en ${label}`,
+    description: `Les films les plus populaires sortis en ${label} : affiches, notes et bandes-annonces, avec The Movie Database.`,
+    path: month === currentMonth ? '/' : `/?mois=${month}`,
+  };
 }
 
 // One entry per movie (an actor can be credited twice), newest first, undated last.
