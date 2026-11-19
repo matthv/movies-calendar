@@ -1,9 +1,10 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router';
 import Movie from '.';
 import { MOVIE, PERSON, mockTmdb } from '../../test/fixtures';
+import { capturePrerender } from '../../lib/prerender';
 
 const PROLIFIC = {
   ...PERSON,
@@ -75,5 +76,26 @@ describe('Movie', () => {
 
     await userEvent.click(within(dialog).getByRole('button', { name: 'Toute la filmographie (10)' }));
     expect(within(dialog).getAllByRole('link')).toHaveLength(10);
+  });
+
+  it('garde l en-tete et le contenu pre-rendus tant que TMDB n a pas repondu', async () => {
+    document.head.querySelectorAll('link[rel="canonical"]').forEach((link) => link.remove());
+    document.title = 'Ojczyzna (2026) – Movies Calendar';
+    const canonical = Object.assign(document.createElement('link'), { rel: 'canonical', href: 'https://www.movies-calendar.com/movie/1437696/ojczyzna' });
+    document.head.appendChild(canonical);
+    const root = Object.assign(document.createElement('div'), { innerHTML: '<div class="container prerender"><h1>Ojczyzna</h1><p>En 1949, Thomas Mann...</p></div>' });
+    capturePrerender(root, window.location);
+    vi.spyOn(globalThis, 'fetch').mockReturnValue(new Promise(() => {}));
+
+    render(<Movie id="1437696" />);
+
+    expect(await screen.findByRole('heading', { level: 1, name: 'Ojczyzna' })).toBeInTheDocument();
+    expect(screen.getByText(/Thomas Mann/)).toBeInTheDocument();
+    expect(screen.queryByText('Chargement…')).toBeNull();
+    expect(document.title).toBe('Ojczyzna (2026) – Movies Calendar');
+    expect(document.querySelector('link[rel="canonical"]').href).toBe('https://www.movies-calendar.com/movie/1437696/ojczyzna');
+
+    capturePrerender(null);
+    canonical.remove();
   });
 });

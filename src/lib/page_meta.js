@@ -18,8 +18,13 @@ function setHead(tag, key, value, attribute, content) {
 
 // Updates the tags index.html already has instead of adding React 19 hoisted
 // ones: hoisting would leave two <title> and two descriptions in the head.
-export function usePageMeta({ title, description, path, image, type = 'website', noindex = false }) {
+// meta === null: data not loaded yet, keep the tags already in the head (the
+// pre-rendered ones) instead of resetting them to the generic site values.
+export function usePageMeta(meta) {
+  const { title, description, path, image, type = 'website', noindex = false } = meta || {};
+  const ready = Boolean(meta);
   useEffect(() => {
+    if (!ready) return;
     const pageTitle = fullTitle(title);
     const text = description || DEFAULT_DESCRIPTION;
     const url = path ? `${SITE_URL}${path}` : null;
@@ -33,5 +38,5 @@ export function usePageMeta({ title, description, path, image, type = 'website',
     setHead('meta', 'property', 'og:url', 'content', url);
     setHead('meta', 'property', 'og:type', 'content', type);
     setHead('meta', 'property', 'og:image', 'content', image || `${SITE_URL}/logo-big.png`);
-  }, [title, description, path, image, type, noindex]);
+  }, [ready, title, description, path, image, type, noindex]);
 }
