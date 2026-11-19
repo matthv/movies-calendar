@@ -194,7 +194,7 @@ export function movieBody(movie, current) {
   }
   if (genres.length) parts.push(`<p>Genres : ${escapeHtml(genres.join(', '))}</p>`);
   parts.push(monthLink(movie, current));
-  return `<main class="container prerender">${parts.join('')}</main>`;
+  return `<div class="container prerender">${parts.join('')}</div>`;
 }
 
 export function monthBody(month, movies, current) {
@@ -203,8 +203,8 @@ export function monthBody(month, movies, current) {
     const year = movie.release_date?.slice(0, 4);
     return `<li><a href="${escapeHtml(moviePath(movie))}">${escapeHtml(movie.title)}</a>${year ? ` (${year})` : ''}</li>`;
   });
-  return `<main class="container prerender"><h1>Les films les plus populaires en ${escapeHtml(meta.label)}</h1>`
-    + `${items.length ? `<ol>${items.join('')}</ol>` : ''}</main>`;
+  return `<div class="container prerender"><h1>Les films les plus populaires en ${escapeHtml(meta.label)}</h1>`
+    + `${items.length ? `<ol>${items.join('')}</ol>` : ''}</div>`;
 }
 
 // { relative file path: html } for every page to pre-render

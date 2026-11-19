@@ -7,6 +7,7 @@ import { fetchMovie, IMAGE_URL } from '../../api/moviedb';
 import Average from '../Average';
 import Character from './character';
 import PersonModal from './person_modal';
+import Prerendered from '../../lib/prerender';
 import Trailer from './trailer';
 import LightboxImages from './lightbox_images';
 
@@ -49,10 +50,10 @@ export default function Movie({ id }) {
     return () => controller.abort();
   }, [id]);
 
-  usePageMeta(movie ? movieMeta(movie) : { type: 'video.movie' });
+  usePageMeta(movie ? movieMeta(movie) : null);
 
   if (!movie) {
-    return <div className="movie container">Chargement…</div>;
+    return <Prerendered fallback={<div className="movie container">Chargement…</div>} />;
   }
 
   const crew = movie.credits?.crew || [];

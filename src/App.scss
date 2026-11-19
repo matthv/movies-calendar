@@ -363,7 +363,7 @@ label {
   }
 }
 
-// Static content served to crawlers, replaced by the app once it loads
+// Static content served to crawlers, kept by the app until TMDB answers
 .prerender {
   padding: 40px 15px;
   ul, ol {
@@ -372,6 +372,11 @@ label {
   a {
     color: $secondary;
   }
+}
+
+// The home page already renders its own month title above the list
+.Home .prerender h1 {
+  display: none;
 }
 
 .person-modal {

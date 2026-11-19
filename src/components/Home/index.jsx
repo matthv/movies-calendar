@@ -6,6 +6,7 @@ import { fetchGenres, fetchMoviesOfMonth } from '../../api/moviedb';
 import { usePageMeta } from '../../lib/page_meta';
 import MovieList from './movie_list';
 import MovieDetail from './movie_detail';
+import Prerendered from '../../lib/prerender';
 
 const MONTHS = Array.from({ length: 12 }, (_, i) => i);
 const PARAM = 'mois';
@@ -102,8 +103,14 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <MovieDetail movie={list.movies[0]} />
-      <MovieList movies={list.movies.slice(0, MAX_MOVIES)} genres={genres} complete={!hasMore} />
+      {list.month === null ? (
+        <Prerendered fallback={<div className="container">Chargement…</div>} />
+      ) : (
+        <>
+          <MovieDetail movie={list.movies[0]} />
+          <MovieList movies={list.movies.slice(0, MAX_MOVIES)} genres={genres} complete={!hasMore} />
+        </>
+      )}
       {canLoadMore && (
         <div className="container text-center mb-5">
           <button type="button" className="btn btn-pink" disabled={loadingMore} onClick={loadMore}>
